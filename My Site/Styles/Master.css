@@ -1,0 +1,128 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    font-family: "Courier New", Courier, monospace;
+    text-align: center;
+}
+
+hr{
+    margin: 100px auto 100px auto;
+    border-style: none;
+    border-top-style: dotted;
+    border-width: 4px;
+    border-color: gray;
+    width: 3%;
+  }
+
+.Top-Container{
+    position: relative;
+    padding-top: 100px;
+    background-color: #EAF6F6;
+}
+
+.Middle-container{
+    background-color: #FFFFFF;
+}
+
+.Bottom-container{
+    background-color: #65BFBF;
+    line-height: 2.5;
+    color: white;
+}
+
+.Bottom-container p{
+    font-size: 12px;
+    padding-bottom: 1.875em;
+}
+
+a{
+    color: #11999E;
+}
+
+h1, h2, h3{
+    color: #86CCCC;
+}
+
+#Hector, #Dev{
+    font-weight: normal;
+    font-family: 'Courgette', cursive;
+
+}
+#Hector{
+    font-size: 3.125rem;
+    margin: 50px, auto, 0, auto;
+
+}
+#Dev{
+    margin-top: 30px;
+    font-size: 1.35rem;
+    font-weight: normal;
+}
+
+.profile{
+    width: 50%;
+    margin: 100px auto 100px auto;
+}
+
+.profile img{
+    border-radius: 80px;
+}
+
+.skill-row{
+    width: 50%;
+    margin: 100px auto 100px auto;
+    text-align: left;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+.Chilli-img{
+    width: 25%;
+    float: left;
+    margin-right: 30px;
+}
+
+.PC-img{
+    width: 25%;
+    float: right;
+    margin-left: 30px;
+    border-radius: 80px;
+}
+
+.Cloud-img{
+    position: absolute;
+}
+
+.Top-Cloud{
+    right: 300px;
+    bottom: 300px;
+}
+
+.Bottom-Cloud{
+    left: 300px;
+    bottom: 200px;
+}
+
+.contact-me{
+    margin: 50px auto 50px auto;
+    line-height: 2.5;
+    width: 50%;
+    font-weight: bold;
+}
+
+.contact-me p{
+    line-height: 1;
+    padding-top: 20px;
+}
+
+.btn{
+    color: white;
+    text-decoration: none;
+    background-color: #0EC4CB;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bolder;
+}
