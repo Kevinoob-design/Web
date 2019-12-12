@@ -1,0 +1,16 @@
+body{
+    margin-top: 10%;
+    text-align: center;
+}
+
+input{
+    margin: 10px;
+}
+
+button{
+    width: 200px;
+}
+
+.container{
+    width: 25rem;
+}
