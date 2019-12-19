@@ -1,8 +1,9 @@
 //jshint esversion:6
 
 const express = require("express");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const ejs = require("ejs");
+const _ = require("lodash");
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -11,6 +12,10 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 const posts = [];
 
 const app = express();
+
+app.listen(process.env.PORT || 3000, function() {
+  console.log("Runnig");
+});
 
 app.set('view engine', 'ejs');
 
@@ -24,13 +29,32 @@ app.get("/", (req, res) => {
   res.redirect("/home");
 });
 
+mongoose.connect("mongodb://localhost:27017/postDB", {
+    useNewUrlParser: true
+});
+
+const postSchema = mongoose.Schema({
+  title: {type: String, required: true},
+  body: {type: String, required: true}
+});
+
+const Post = mongoose.model("Post", postSchema);
+
 app.get("/home", (req, res) => {
 
-  res.render("index", {
-    body: req.path.replace("/", ""),
-    title: req.path.replace("/", ""),
-    homeStartingContent: homeStartingContent,
-    posts: posts
+  Post.find({}, function(err, posts){
+    if(err){
+      console.log(err);
+    }else{
+      console.log(posts);
+
+      res.render("index", {
+        body: req.path.replace("/", ""),
+        title: req.path.replace("/", ""),
+        homeStartingContent: homeStartingContent,
+        posts: posts
+      });
+    }
   });
 });
 
@@ -63,17 +87,18 @@ app.get("/compose", (req, res) => {
 
 app.get("/posts/:index", (req, res) => {
 
-  if(posts[req.params.index]){
-    res.render("index", {
-      body: "posts",
-      title: req.path.replace("/", ""),
-      postTitle: posts[req.params.index].title,
-      postBody: posts[req.params.index].body
-    });
-  }
-  else{
-    res.redirect("/404");
-  }
+  Post.findOne({_id: req.params.index}, function(err, found){
+    if(!err){
+      res.render("index", {
+        body: "posts",
+        title: req.path.replace("/", ""),
+        postTitle: found.title,
+        postBody: found.body
+      });
+    }else{
+      res.redirect("/404");
+    }
+  });
 });
 
 app.get("/404", (req, res) => {
@@ -86,29 +111,14 @@ app.get("/404", (req, res) => {
 
 app.post("/compose", (req, res) => {
 
-  const post = {
-    title: req.body.publishTitle,
-    body: req.body.publishContent,
-  };
+  console.log(req.body);
 
-  posts.push(post);
+  const post = new Post({
+    title: _.capitalize(req.body.publishTitle),
+    body: _.capitalize(req.body.publishContent),
+  });
+
+  post.save();
 
   res.redirect("/home");
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.listen(3000, function () {
-  console.log("Server started on port 3000");
 });
